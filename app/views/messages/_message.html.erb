@@ -1,0 +1,4 @@
+<div id="<%= dom_id message %>">
+  <p><%= message.content %></p>
+  <%= button_to 'Delete', message, method: :delete, data: { turbo_confirm: 'Are you sure?' } %>
+</div>
