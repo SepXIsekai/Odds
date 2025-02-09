@@ -1,0 +1,29 @@
+<div class="login-container">
+  <div class="login-box">
+    <h2>Login to ChatApp</h2>
+
+    <%= form_with scope: :user, url: session_path(:user), class: "login-form" do |form| %>
+      <div class="form-group">
+        <%= form.label :email %>
+        <%= form.email_field :email, autofocus: true, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :password %>
+        <%= form.password_field :password, class: "form-control" %>
+      </div>
+
+      <div class="form-options">
+        <%= form.check_box :remember_me, class: "checkbox" %>
+        <%= form.label :remember_me, "Remember me" %>
+      </div>
+
+      <%= form.submit "Log in", class: "btn-login" %>
+    <% end %>
+
+    <p class="signup-link">
+      Don't have an account?
+      <%= link_to "Sign up", new_user_registration_path, class: "signup-button" %>
+    </p>
+  </div>
+</div>

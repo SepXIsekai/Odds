@@ -1,25 +1,386 @@
+
 html, body, #chatapp {
-    height: 100%;
-    margin: 0;
-  }
-  
-  #chatapp {
-    display: flex;
-    flex-direction: row;
-  }
-  
-  #rooms {
-    background-color: lightblue;
-    width: 200px;
-  }
-  
-  #messages {
-    background-color: beige;
-    flex-grow: 1;
-  }
-  #message-form {
-    display: flex;
-  }
- .message form{
-    display: inline-block;
- }
+  height: 100%;
+  margin: 0;
+}
+
+#chatapp {
+  display: flex;
+  flex-direction: row;
+}
+
+#rooms {
+  background-color: lightblue;
+  width: 200px;
+}
+
+#messages {
+  background-color: beige;
+  flex-grow: 1;
+}
+#message-form {
+  display: flex;
+}
+.message form{
+  display: inline-block;
+}
+nav {
+background: #333;
+color: white;
+padding: 10px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+nav a, nav span {
+color: white;
+text-decoration: none;
+margin-right: 10px;
+}
+
+nav form {
+display: inline;
+}
+
+button.logout-btn {
+background: red;
+color: white;
+border: none;
+padding: 5px 10px;
+cursor: pointer;
+}
+/* Container หลักของแชท */
+#message-list {
+display: flex;
+flex-direction: column;
+gap: 10px;
+padding: 10px;
+}
+
+/* Container ของแต่ละข้อความ */
+.chat-container {
+display: flex;
+max-width: 80%;
+}
+
+/* Bubble Chat */
+.chat-bubble {
+padding: 12px 16px;
+border-radius: 18px;
+word-wrap: break-word;
+font-size: 14px;
+max-width: 70%;
+}
+
+/* ข้อความของตัวเอง (Align ขวา) */
+.sent {
+align-self: flex-end;
+}
+
+.sent .chat-bubble {
+background-color: #007bff;
+color: white;
+border-bottom-right-radius: 5px;
+}
+
+/* ข้อความที่ได้รับจากคนอื่น (Align ซ้าย) */
+.received {
+align-self: flex-start;
+}
+
+.received .chat-bubble {
+background-color: #e5e5ea;
+color: black;
+border-bottom-left-radius: 5px;
+}
+
+/* ชื่อผู้ส่งข้อความ */
+.chat-user {
+font-size: 12px;
+color: #555;
+margin-bottom: 5px;
+}
+
+/* เนื้อหาของข้อความ */
+.chat-content {
+margin: 0;
+}
+/* Style สำหรับหน้า Login */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f4;
+}
+
+.login-box {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 350px;
+}
+
+.login-box h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* ฟอร์ม */
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: #555;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.checkbox {
+  margin-right: 5px;
+}
+
+.forgot-password {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+/* ปุ่ม Login */
+.btn-login {
+  width: 100%;
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-login:hover {
+  background-color: #0056b3;
+}
+
+/* ลิงก์สมัครสมาชิก */
+.signup-link {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.signup-button {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.signup-button:hover {
+  text-decoration: underline;
+}
+/* Style สำหรับหน้า Register */
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f4;
+}
+
+.register-box {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 350px;
+}
+
+.register-box h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* ฟอร์ม */
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: #555;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* ปุ่ม Register */
+.btn-register {
+  width: 100%;
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-register:hover {
+  background-color: #218838;
+}
+
+/* ลิงก์เข้าสู่ระบบ */
+.login-link {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.login-button {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.login-button:hover {
+  text-decoration: underline;
+}
+/* 💬 Container หลักของ Chat */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 600px;
+  margin: auto;
+  background: #f4f4f4;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* 🔹 ส่วน Header */
+.chat-header {
+  background: #007bff;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-size: 18px;
+}
+
+/* 💬 ส่วนแสดงข้อความ */
+.chat-messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 📩 Bubble Chat */
+.message-container {
+  display: flex;
+  max-width: 80%;
+}
+
+/* Bubble Chat */
+.message-bubble {
+  padding: 12px 16px;
+  border-radius: 18px;
+  word-wrap: break-word;
+  font-size: 14px;
+  max-width: 70%;
+}
+
+/* ข้อความของตัวเอง (Align ขวา) */
+.sent {
+  align-self: flex-end;
+}
+
+.sent .message-bubble {
+  background-color: #007bff;
+  color: white;
+  border-bottom-right-radius: 5px;
+}
+
+/* ข้อความที่ได้รับจากคนอื่น (Align ซ้าย) */
+.received {
+  align-self: flex-start;
+}
+
+.received .message-bubble {
+  background-color: #e5e5ea;
+  color: black;
+  border-bottom-left-radius: 5px;
+}
+
+/* ชื่อผู้ส่งข้อความ */
+.message-user {
+  font-size: 12px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+/* 📩 ส่วน Input */
+.chat-form {
+  padding: 10px;
+  background: white;
+  border-top: 1px solid #ddd;
+}
+
+.input-group {
+  display: flex;
+  gap: 10px;
+}
+
+/* ช่องกรอกข้อความ */
+.chat-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* ปุ่มส่งข้อความ */
+.chat-send-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.chat-send-btn:hover {
+  background-color: #0056b3;
+}

@@ -1,4 +1,11 @@
-<div id="<%= dom_id message %>">
-  <p><%= message.content %></p>
-  <%= button_to 'Delete', message, method: :delete, data: { turbo_confirm: 'Are you sure?' } %>
-</div>
+<% if user_signed_in? && message.user.present? %>
+ <div id="<%= dom_id message %>" class="message-container <%= message.user == current_user ? 'sent' : 'received' %>">
+  <div class="message-bubble">
+    <p class="message-user"><strong><%= message.user.name || message.user.email %></strong></p>
+    <p class="message-content"><%= message.content %></p>
+    </div>
+    <% if message.user == current_user %>
+      <%= button_to 'Delete', message_path(message), method: :delete, data: { turbo_confirm: 'Are you sure?' }, class: "delete-btn" %>
+    <% end %>
+  </div>
+<% end %>

@@ -1,5 +1,6 @@
 class MessagesController < ApplicationController
-  before_action :set_message, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!
+  before_action :set_message, only: %i[destroy]
 
   # GET /messages or /messages.json
   def index
@@ -26,15 +27,16 @@ class MessagesController < ApplicationController
 
   # POST /messages or /messages.json
   def create
-    @message = Message.new(message_params)
+    @message = current_user.messages.build(message_params)
 
     respond_to do |format|
       if @message.save
-        @message.broadcast_append_to @message.room, partial: @message ,
-          locals:{message: @message} , target: "messages-area"
-        format.html { redirect_to @message, notice: "Message was successfully created." }
+        format.html { redirect_to @message.room }
         format.json { render :show, status: :created, location: @message }
-        format.turbo_stream
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.append("message-list", partial: "messages/message", 
+            locals: { message: @message, current_user: current_user })
+        end
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @message.errors, status: :unprocessable_entity }
@@ -57,24 +59,30 @@ class MessagesController < ApplicationController
 
   # DELETE /messages/1 or /messages/1.json
   def destroy
-    @message.destroy!
-
-    respond_to do |format|
-      @message.broadcast_remove_to @message.room, target: @message
-      format.turbo_stream
-      format.html { redirect_to messages_path, status: :see_other, notice: "Message was successfully destroyed." }
-      format.json { head :no_content }
+    if @message.present?
+      @message.destroy!
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.remove(@message)
+        end
+        format.html { redirect_to messages_path, status: :see_other, notice: "Message was successfully destroyed." }
+        format.json { head :no_content }
+      end
+    else
+      redirect_to messages_path, alert: "Message not found."
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_message
-      @message = Message.find(params.expect(:id))
-    end
+      @message = Message.find_by(id: params[:id])
+    redirect_to messages_path, alert: "Message not found." if @message.nil?
+  end
+end
 
     # Only allow a list of trusted parameters through.
     def message_params
       params.require(:message).permit(:content, :room_id)
     end
-end
+

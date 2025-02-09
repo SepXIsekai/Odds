@@ -1,7 +1,7 @@
-<%= form_with(model: message, id: 'message-form') do |form| %>
-  <%= form.text_field :content %>
-  <%= form.hidden_field :room_id %>
-  <div>
-    <%= form.submit %>
+<%= form_with(model: message, id: "message-form", data: { turbo_frame: "message_form" }) do |form| %>
+  <div class="input-group">
+    <%= form.text_field :content, placeholder: "Type a message...", class: "chat-input", required: true %>
+    <%= form.hidden_field :room_id, value: message.room_id %>
+    <%= form.submit "Send", class: "chat-send-btn" %>
   </div>
 <% end %>

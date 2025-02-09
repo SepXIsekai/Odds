@@ -1,3 +1,20 @@
+<nav style="background: #333; color: white; padding: 10px; display: flex; justify-content: space-between;">
+  <div>
+    <strong>ChatApp</strong>
+  </div>
+  <div>
+<% if user_signed_in? %>
+      <span>Welcome, <%= current_user.name || current_user.email %>!</span>
+      <%= button_to "Logout", destroy_user_session_path, method: :delete, data: { turbo: false }, 
+        style: "background: red; color: white; border: none; padding: 5px 10px; cursor: pointer;" %>
+    <% else %>
+      <%= link_to "Login", new_user_session_path, style: "color: white; margin-right: 10px;" %>
+      <%= link_to "Sign Up", new_user_registration_path, style: "color: white;" %>
+    <% end %>
+  </div>
+</nav>
+
+<h1>Chat Rooms</h1>
 <div id='chatapp'>
   <div id='rooms'>
     <div id='room-list'>
