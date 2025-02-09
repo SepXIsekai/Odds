@@ -1,3 +1,5 @@
+https://classic-subtly-scorpion.ngrok-free.app
+
 1 . Clone Repo ลงใน Ubantu<br>
 ```sh
 git clone https://github.com/SepXIsekai/Odds.git
