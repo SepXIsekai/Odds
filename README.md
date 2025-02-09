@@ -8,7 +8,7 @@ git clone https://github.com/SepXIsekai/Odds.git
 
 3 . ติดตั้ง bundle
 ```sh
-bundle install<br>
+bundle install
 ```
 4 . ตั้งค่าฐานข้อมูล<br>
 ```sh
