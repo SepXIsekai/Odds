@@ -1,24 +1,15 @@
-# README
+1 . Clone Repo ลงใน Ubantu
+`git clone https://github.com/SepXIsekai/Odds.git`
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+2 . Change Directory ไปยังที่ Clone Project ไป
 
-Things you may want to cover:
+3 . ติดตั้ง bundle
+`bundle install`
 
-* Ruby version
+4 . ตั้งค่าฐานข้อมูล
+`rails db:create`
+rails db:migrate
+rails db:seed (ถ้ามีข้อมูลเริ่มต้น)
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+5 . Run server
+rails server
