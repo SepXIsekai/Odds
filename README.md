@@ -5,7 +5,7 @@ https://classic-subtly-scorpion.ngrok-free.app
 git clone https://github.com/SepXIsekai/Odds.git
 ```
 2 . Change Directory ไปยังที่ Clone Project ไป<br>
-<br>
+
 3 . ติดตั้ง bundle
 ```sh
 bundle install<br>
