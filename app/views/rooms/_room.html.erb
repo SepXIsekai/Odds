@@ -1,5 +1,6 @@
-<%= link_to messages_path(room_id: room.id), data: { turbo_frame: 'room-messages' } do %>
-  <div class='room'>
-    <%= room.name %>
+<%= link_to messages_path(room_id: room.id), data: { turbo_frame: 'room-messages' }, class: "room-card" do %>
+  <div class="room-content">
+    <span class="room-name"><%= room.name %></span>
+    <span class="room-icon">💬</span> <!-- ไอคอนแชท -->
   </div>
 <% end %>

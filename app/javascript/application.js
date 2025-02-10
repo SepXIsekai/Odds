@@ -3,8 +3,8 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import { Controller } from "@hotwired/stimulus"
 
-export default class extends Controller {
-  reset() {
-    this.element.reset();
+document.addEventListener("turbo:submit-end", function (event) {
+  if (event.target && event.target.id === "message-form") {
+    event.target.reset();  // ✅ Reset ฟอร์มหลังจากส่งข้อความ
   }
-}
+});

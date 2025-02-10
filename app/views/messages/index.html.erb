@@ -1,18 +1,21 @@
-<div id="messages">
+<div id="messages" class="chat-container">
   <% if @room.present? %>
     <%= turbo_frame_tag 'room-messages' do %>
-      <div id="message-list">
+      <div id="message-list" class="chat-box">
         <% @messages.each do |message| %>
           <%= render partial: "messages/message", locals: { message: message, current_user: current_user } %>
         <% end %>
       </div>
-      <%= render partial: "messages/form", locals: { message: Message.new(room: @room) } %>
+
+      <div class="chat-input">
+        <%= render partial: "messages/form", locals: { message: Message.new(room: @room) } %>
+      </div>
 
       <% if user_signed_in? %>  
         <%= turbo_stream_from @room.to_gid_param %>  <!-- ✅ ใช้ Global ID -->
       <% end %>
     <% end %>
   <% else %>
-    <p>Please select a room to start chatting.</p>
+    <p class="no-room">กรุณาเลือกห้องเพื่อเริ่มแชท</p>
   <% end %>
 </div>
