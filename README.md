@@ -1,5 +1,6 @@
 # Chatapp - Ruby on Rails
-https://classic-subtly-scorpion.ngrok-free.app
+ChatApp - https://classic-subtly-scorpion.ngrok-free.app
+
 
 1 . Clone Repo ลงใน Ubantu<br>
 ```sh
