@@ -1,24 +1,18 @@
 Rails.application.routes.draw do
   devise_for :users
-
-  devise_scope :user do
-    root to: "devise/sessions#new"  # ✅ เปลี่ยน root ให้ Devise จัดการหน้า Login
-  end
-
   resources :messages
   resources :rooms
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
+  # ✅ เปลี่ยน `root` ให้หน้า Login เป็นหน้าแรก ถ้ายังไม่ได้ Login
+  devise_scope :user do
+    root to: "devise/sessions#new", as: :unauthenticated_root
+  end
 
+  # ✅ กำหนด `root` ให้เป็น ChatApp ถ้า Login แล้ว
+  authenticated :user do
+    root to: "rooms#index", as: :authenticated_root
+  end
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # Health Check สำหรับ Load Balancer
   get "up" => "rails/health#show", as: :rails_health_check
-  
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 end
