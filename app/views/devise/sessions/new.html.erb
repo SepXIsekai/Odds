@@ -2,7 +2,7 @@
   <div class="login-box">
     <h2>Login to ChatApp</h2>
 
-    <%= form_with scope: :user, url: session_path(:user), class: "login-form" do |form| %>
+    <%= form_with scope: :user, url: session_path(:user), class: "login-form" ,data: { turbo: false } do |form| %>
       <div class="form-group">
         <%= form.label :email %>
         <%= form.email_field :email, autofocus: true, class: "form-control" %>
