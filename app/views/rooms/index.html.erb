@@ -3,7 +3,7 @@
     <strong>ChatApp</strong>
   </div>
   <div>
-<% if user_signed_in? %>
+    <% if user_signed_in? %>
       <span>Welcome, <%= current_user.name || current_user.email %>!</span>
       <%= button_to "Logout", destroy_user_session_path, method: :delete, data: { turbo: false }, 
         style: "background: red; color: white; border: none; padding: 5px 10px; cursor: pointer;" %>
@@ -18,21 +18,28 @@
 <div id='chatapp'>
   <div id='rooms'>
     <div id='room-list'>
-    <% @rooms.each do |room| %>
-      <%= render room %>
-    <% end %>
-  </div>
-  <%= render partial: 'form', locals: { room: Room.new(name: "Room #{Room.count + 1}") } %>
-  </div>
-  <div id='messages'>
-  <%= turbo_frame_tag 'room-messages' do %>
-    <div id='message-list'>
-      <% @messages.each do |message| %>
-        <%= render message %>
+      <% @rooms.each do |room| %>
+        <%= render room %>
       <% end %>
     </div>
-    <%= render partial: 'messages/form', locals: { message: Message.new(room: @room) } %>
-    <%= turbo_stream_from @room %>
-  <% end %>
-</div>
+    <%= render partial: 'form', locals: { room: Room.new(name: "Room #{Room.count + 1}") } %>
+  </div>
+
+  <div id='messages'>
+    <% if @room.present? %>  <!-- ✅ ตรวจสอบว่ามีห้องก่อน -->
+      <%= turbo_frame_tag 'room-messages' do %>
+        <div id='message-list'>
+          <% @messages&.each do |message| %>  <!-- ✅ ป้องกัน @messages เป็น nil -->
+            <%= render message %>
+          <% end %>
+        </div>
+        <%= render partial: 'messages/form', locals: { message: Message.new(room: @room) } %>
+        <% if @room.persisted? %>  <!-- ✅ ตรวจสอบว่าห้องถูกบันทึกก่อนใช้ Turbo Stream -->
+          <%= turbo_stream_from @room %>
+        <% end %>
+      <% end %>
+    <% else %>
+      <p>กรุณาเลือกห้องแชทเพื่อเริ่มการสนทนา</p>
+    <% end %>
+  </div>
 </div>
