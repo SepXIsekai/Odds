@@ -1,15 +1,15 @@
 class RoomsController < ApplicationController
   before_action :authenticate_user!
-  # GET /rooms or /rooms.json
+  before_action :set_room, only: [:show, :edit, :update, :destroy] # ✅ ใช้ before_action
+
+  # GET /rooms
   def index
     @rooms = Room.all
-
-    @room = @rooms[0] unless @rooms.empty?
-    @messages = []
-    @messages = @room.messages unless @rooms.empty?
+    @room = @rooms.first # ✅ กำหนดให้ `@room` มีค่าเริ่มต้น
+    @messages = @room.present? ? @room.messages : [] # ✅ ป้องกัน `nil` error
   end
 
-  # GET /rooms/1 or /rooms/1.json
+  # GET /rooms/1
   def show
   end
 
@@ -18,17 +18,13 @@ class RoomsController < ApplicationController
     @room = Room.new
   end
 
-  # GET /rooms/1/edit
-  def edit
-  end
-
-  # POST /rooms or /rooms.json
+  # POST /rooms
   def create
     @room = Room.new(room_params)
 
     respond_to do |format|
       if @room.save
-        format.html { redirect_to @room, notice: "Room was successfully created." }
+        format.html { redirect_to rooms_path, notice: "Room was successfully created." }
         format.json { render :show, status: :created, location: @room }
         format.turbo_stream
       else
@@ -38,11 +34,11 @@ class RoomsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /rooms/1 or /rooms/1.json
+  # PATCH/PUT /rooms/1
   def update
     respond_to do |format|
       if @room.update(room_params)
-        format.html { redirect_to @room, notice: "Room was successfully updated." }
+        format.html { redirect_to rooms_path, notice: "Room was successfully updated." }
         format.json { render :show, status: :ok, location: @room }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -51,24 +47,29 @@ class RoomsController < ApplicationController
     end
   end
 
-  # DELETE /rooms/1 or /rooms/1.json
+  # DELETE /rooms/1
   def destroy
-    @room.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to rooms_path, status: :see_other, notice: "Room was successfully destroyed." }
-      format.json { head :no_content }
+    if @room.present?
+      @room.destroy!
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to rooms_path, notice: "Room was successfully destroyed.", status: :see_other }
+        format.json { head :no_content }
+      end
+    else
+      redirect_to rooms_path, alert: "❌ ไม่พบห้องที่ต้องการลบ"
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_room
-      @room = Room.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def room_params
-      params.expect(room: [ :name ])
-    end
+  # ✅ ใช้ `before_action` เพื่อกำหนดค่า `@room`
+  def set_room
+    @room = Room.find_by(id: params[:id]) # ✅ ใช้ `find_by` ป้องกัน `nil` error
+  end
+
+  # ✅ ป้องกัน Parameter Injection ด้วย `require(:room)`
+  def room_params
+    params.require(:room).permit(:name)
+  end
 end
